@@ -2,8 +2,8 @@
   "name": "cpp-refactor",
   "main": "./lib/cpp-refactor",
   "version": "0.0.0",
-  "description": "A short description of your package",
-  "keywords": [
+  "description": "C++ refactoring tool",
+  "keywords": ["c++", "cpp", "refactoring"
   ],
   "activationCommands": {
     "atom-workspace": "cpp-refactor:toggle"
