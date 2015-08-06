@@ -6,7 +6,8 @@
   "keywords": ["c++", "cpp", "refactoring"
   ],
   "activationCommands": {
-    "atom-workspace": "cpp-refactor:toggle"
+    "atom-workspace": "cpp-refactor:toggle",
+    "atom-workspace": "cpp-refactor:showclassinfo"
   },
   "repository": "https://github.com/atom/cpp-refactor",
   "license": "MIT",
