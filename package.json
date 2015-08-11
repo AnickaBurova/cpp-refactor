@@ -6,8 +6,9 @@
   "keywords": ["c++", "cpp", "refactoring"
   ],
   "activationCommands": {
-    "atom-workspace": "cpp-refactor:toggle",
-    "atom-workspace": "cpp-refactor:showclassinfo"
+    "atom-workspace": "cpp-refactor:find-next-class",
+    "atom-workspace": "cpp-refactor:find-prev-class"
+    ,"atom-workspace": "cpp-refactor:select-brace-range"
   },
   "repository": "https://github.com/atom/cpp-refactor",
   "license": "MIT",

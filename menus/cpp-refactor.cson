@@ -2,8 +2,8 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Toggle cpp-refactor'
-      'command': 'cpp-refactor:toggle'
+      'label': 'Next class cpp-refactor'
+      'command': 'cpp-refactor:find-next-class'
     }
   ]
 'menu': [
@@ -12,14 +12,8 @@
     'submenu': [
       'label': 'cpp-refactor'
       'submenu': [
-        {
-          'label': 'Toggle'
-          'command': 'cpp-refactor:toggle'
-        },
-        {
-          'label': 'Toggle cpp-refactor class info'
-          'command': 'cpp-refactor:showclassinfo'
-        }
+          'label': 'Next class'
+          'command': 'cpp-refactor:find-next-class'
       ]
     ]
   }
