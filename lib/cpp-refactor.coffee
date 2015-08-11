@@ -1,3 +1,4 @@
+{Range,Point} = require 'atom'
 CppRefactorView = require './cpp-refactor-view'
 CppRefactorClassInfoView = require './cpp-refactor-class-info-view'
 {CompositeDisposable} = require 'atom'
@@ -44,6 +45,13 @@ module.exports = CppRefactor =
   classPattern: /(class[\s]+)(\w+)/g
   fieldsPattern: /((?:\w+|::)*(?:<(?:\w*|,|\s*)*>)*)\s+(\w+)\s*(?:\[\s*(\w+)\s*\])*;/g
 
+  get_range_begin2cursor: (editor) ->
+    new Range(new Point(0,0), editor.getCursorBufferPosition())
+
+  get_range_cursor2end: (editor) ->
+    new Range(editor.getCursorBufferPosition(), new Point(editor.getLineCount(),0))
+    # new Range(editor.getCursorBufferPosition(), new Point(editor.getCursorBufferPosition().row + 15,0))
+
   # find_current_class: (editor : undefined) ->
   #   if editor or editor = atom.workspace.getActiveTextEditor()
   #     if editor.hasMultipleCursors()
@@ -55,50 +63,73 @@ module.exports = CppRefactor =
   #
   #
   select_brace_range: ->
+    console.log "CppRefactor: select brace range"
     if editor = atom.workspace.getActiveTextEditor()
       if editor.hasMultipleCursors()
         console.log "There are multiple cursors."
         return
-      pat = /// # find opening brace
-          (\/\/.*\n)* # starting one line comment, at this point, just skip it
-          (\/\*.*\*\/)* # any block comment
-          ({)
-      ///
 
-      editor.backwardsScanInBufferRange pat, editor.getCursorBufferPosition(), (obj) ->
-        if obj.match[3].length > 0
-          editor.setCursorBufferPosition obj.range.end
-          obj.stop()
-      # endBrace = find_brace_range(editor)
-      # if endBrace is not undefined
-      #   editor.setSelectedBufferRange [editor.getCursorBufferPosition(), endBrace]
+      pat = /// # find opening brace
+          (\s*\/\/.*\n)| # starting one line comment, at this point, just skip it
+          (\s*\/\*.*\*\/\s*)| # any block comment
+          (})|
+          ({)
+      ///g
+
+      level = 0
+      found = false
+      editor.backwardsScanInBufferRange pat, @get_range_begin2cursor(editor), (obj) ->
+        # console.log "found '#{obj.matchText}' at #{obj.range}: #{obj.match[1]}, #{obj.match[2]}, #{obj.match[3]}, #{obj.match[4]}"
+        if obj.match[3]?
+          level++
+        if obj.match[4]?
+          if level > 0
+            level--
+          else
+            found = true
+            editor.setCursorBufferPosition [obj.range.end.row, obj.range.end.column - 1]
+            obj.stop()
+
+      if not found
+        return
+
+      endBrace = @find_brace_range(editor)
+      console.log endBrace
+      if endBrace?
+        editor.setSelectedBufferRange [editor.getCursorBufferPosition(), endBrace]
   #
   # # cursor needs to be on opening brace {
-  # find_brace_range: (editor : undefined) ->
-  #   if editor or editor = atom.workspace.getActiveTextEditor()
-  #     if editor.hasMultipleCursors()
-  #       console.log "There are multiple cursors."
-  #       return undefined
-  #     pat = ///
-  #         (\/\/.*\n)* # starting one line comment, at this point, just skip it
-  #         (\/\*.*\*\/)* # any block comment
-  #         ({) # opening brace
-  #         (}) # closing brace
-  #         ///
-  #     level = 0
-  #     endBrace = undefined
-  #     editor.scanInBufferRange pat, editor.getCursorBufferPosition(), (obj) ->
-  #       # ignore comments and just focus on braces
-  #       # on opening brace, increase level and continue finding
-  #       if obj.match[3].length > 0
-  #         level++
-  #       if obj.match[4].length > 0
-  #         if level > 0
-  #           level--
-  #         else
-  #           endBrace = obj.range.end # closing brace is the last match, so it will be the end of match range
-  #           obj.stop()
-  #     return endBrace
+  find_brace_range: (editor) ->
+    if editor or editor = atom.workspace.getActiveTextEditor()
+      if editor.hasMultipleCursors()
+        console.log "There are multiple cursors."
+        return undefined
+      # console.log "start is :#{@get_range_cursor2end(editor).start}"
+      # console.log @get_range_cursor2end(editor).end
+      pat = ///
+          (\s*\/\/.*\n)| # starting one line comment, at this point, just skip it
+          (\s*\/\*.*\*\/)| # any block comment
+          ({)|
+          (};*)
+          ///g
+      level = 0
+      endBrace = undefined
+      editor.scanInBufferRange pat, @get_range_cursor2end(editor), (obj) ->
+        # ignore comments and just focus on braces
+        # on opening brace, increase level and continue finding
+        # console.log "found '#{obj.matchText}' at #{obj.range}: #{obj.match[1]}, #{obj.match[2]}, #{obj.match[3]}, #{obj.match[4]}"
+        if obj.match[3]?
+          level++
+          # console.log "opening new brace: #{level}"
+        if obj.match[4]?
+          if level > 1
+            level--
+            # console.log "closing prev brace: #{level}"
+          else
+            # console.log "found the closing brace"
+            endBrace = obj.range.end # closing brace is the last match, so it will be the end of match range
+            obj.stop()
+      endBrace
   #
   #
   # # Cursor needs to be at the begining of the class for this to work fine.

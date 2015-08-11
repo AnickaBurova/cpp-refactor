@@ -9,6 +9,7 @@ namespace s104
 	{
 		uint16_t mValue;
 	public:
+		// comment
 		CNameOfFile()
 		{}
 		CNameOfFile(uint16_t value)
