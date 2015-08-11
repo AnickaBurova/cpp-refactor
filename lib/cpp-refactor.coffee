@@ -69,6 +69,20 @@ module.exports = CppRefactor =
         console.log "There are multiple cursors."
         return
 
+      startBrace = @find_brace_start(editor)
+      if not startBrace?
+        return
+      endBrace = @find_brace_end(editor)
+      if not endBrace?
+        return
+
+      editor.setSelectedBufferRange [startBrace, endBrace]
+
+  find_brace_start: (editor) ->
+    if editor or editor = atom.workspace.getActiveTextEditor()
+      if editor.hasMultipleCursors()
+        console.log "There are multiple cursors."
+        return undefined
       pat = /// # find opening brace
           (\s*\/\/.*\n)| # starting one line comment, at this point, just skip it
           (\s*\/\*.*\*\/\s*)| # any block comment
@@ -77,7 +91,7 @@ module.exports = CppRefactor =
       ///g
 
       level = 0
-      found = false
+      startBrace = undefined
       editor.backwardsScanInBufferRange pat, @get_range_begin2cursor(editor), (obj) ->
         # console.log "found '#{obj.matchText}' at #{obj.range}: #{obj.match[1]}, #{obj.match[2]}, #{obj.match[3]}, #{obj.match[4]}"
         if obj.match[3]?
@@ -86,20 +100,12 @@ module.exports = CppRefactor =
           if level > 0
             level--
           else
-            found = true
-            editor.setCursorBufferPosition [obj.range.end.row, obj.range.end.column - 1]
+            startBrace = obj.range.start
             obj.stop()
-
-      if not found
-        return
-
-      endBrace = @find_brace_range(editor)
-      console.log endBrace
-      if endBrace?
-        editor.setSelectedBufferRange [editor.getCursorBufferPosition(), endBrace]
+      startBrace
   #
-  # # cursor needs to be on opening brace {
-  find_brace_range: (editor) ->
+  # cursor cannot to be on opening brace {
+  find_brace_end: (editor) ->
     if editor or editor = atom.workspace.getActiveTextEditor()
       if editor.hasMultipleCursors()
         console.log "There are multiple cursors."
@@ -122,7 +128,7 @@ module.exports = CppRefactor =
           level++
           # console.log "opening new brace: #{level}"
         if obj.match[4]?
-          if level > 1
+          if level > 0
             level--
             # console.log "closing prev brace: #{level}"
           else

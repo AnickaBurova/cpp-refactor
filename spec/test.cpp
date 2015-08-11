@@ -9,13 +9,14 @@ namespace s104
 	{
 		uint16_t mValue;
 	public:
-		// comment
+		// comment {
 		CNameOfFile()
 		{}
 		CNameOfFile(uint16_t value)
 			:mValue(value)
 		{
 		};
+		/*  {   */
 
 		CNameOfFile(std::istream& reader)
 			:mValue(read_value<uint16_t>(reader))
