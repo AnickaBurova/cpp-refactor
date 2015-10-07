@@ -4,10 +4,12 @@
 
 namespace s104
 {
-
 	class CNameOfFile : public IInformationElement
 	{
 		uint16_t mValue;
+		std::string mText;
+		std::vector<char> mVec;
+		uint  mArray[22];
 	public:
 		// comment {
 		CNameOfFile()
@@ -35,7 +37,14 @@ namespace s104
 			stringer << "Name of file: " << GetValue();
 		}
 
+		int24_t value;
+
+		size_t GetFieldsSize()const
+		{
+			return +sizeof(mValue)+sizeof(mText)+mVec.size()+1+sizeof(mArray)+3;
+		}
 	};
+
 
 	class CNameOfSection : public IInformationElement
 	{
@@ -65,6 +74,10 @@ namespace s104
 			stringer << "Name of section: " << GetValue();
 		}
 
+		size_t GetFieldsSize()const
+		{
+			return 2;
+		}
 	};
 
 	class CLengthOfFileOrSection : public IInformationElement
@@ -94,6 +107,7 @@ namespace s104
 		{
 			stringer << "Length of file or section: " << GetValue();
 		}
+
 	};
 
 	template < >
