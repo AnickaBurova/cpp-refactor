@@ -14,7 +14,7 @@
         "cpp-refactor:find-class"
     ]
   },
-  "repository": "https://github.com/atom/cpp-refactor",
+  "repository": "https://github.com/AnickaBurova/cpp-refactor",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
