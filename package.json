@@ -1,17 +1,20 @@
 {
   "name": "cpp-refactor",
   "main": "./lib/cpp-refactor",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "C++ refactoring tool",
-  "keywords": ["c++", "cpp", "refactoring"
+  "keywords": [
+    "c++",
+    "cpp",
+    "refactoring"
   ],
   "activationCommands": {
     "atom-workspace": [
-        "cpp-refactor:find-next-class",
-        "cpp-refactor:find-prev-class" ,
-        "cpp-refactor:select-brace-range" ,
-        "cpp-refactor:create-method-fields-size",
-        "cpp-refactor:find-class"
+      "cpp-refactor:find-next-class",
+      "cpp-refactor:find-prev-class",
+      "cpp-refactor:select-brace-range",
+      "cpp-refactor:create-method-fields-size",
+      "cpp-refactor:find-class"
     ]
   },
   "repository": "https://github.com/AnickaBurova/cpp-refactor",
@@ -19,6 +22,5 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
