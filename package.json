@@ -10,9 +10,7 @@
   ],
   "activationCommands": {
     "atom-workspace": [
-      "cpp-refactor:find-class",
-      "cpp-refactor:copy-filepath-to-clipboard",
-      "cpp-refactor:copy-filename-to-clipboard"
+      "cpp-refactor:find-class"
     ]
   },
   "repository": "https://github.com/AnickaBurova/cpp-refactor",

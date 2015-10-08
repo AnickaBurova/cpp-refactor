@@ -9,5 +9,3 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
   'cmd-alt-r c'     : 'cpp-refactor:find-class'
-  'alt-m y'     : 'cpp-refactor:copy-filepath-to-clipboard'
-  'alt-m n'     : 'cpp-refactor:copy-filename-to-clipboard'

@@ -7,3 +7,6 @@
 
 ## 2.1.1 - (8th Oct 2015)
 * Find class improved: faster and more robust.
+
+## 2.2.0 - (8th Oct 2015)
+* Removed non cpp refactoring features.
