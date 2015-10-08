@@ -327,17 +327,12 @@ module.exports = CppRefactor =
   search_in_files: (search_dir, exclude_folder, go_up, search_pattern) ->
 
     search_file = (filepath) ->
-      deb = path.basename(filepath) == "daemon.h"
-      if deb
-        print "in file ", filepath
       if not fs.existsSync(filepath)
         return []
       stat = fs.statSync(filepath)
       found = []
       if stat && not stat.isDirectory()
         for_each_line filepath, (line,linei) ->
-          if deb
-            print line
           if m = search_pattern.exec(line)
             found.push [filepath,linei,m.index]
             print "found in",filepath,"at",linei,m.index
@@ -360,7 +355,6 @@ module.exports = CppRefactor =
             if not stat.isDirectory()
               any_files = true
               if path.extname(file) == ".h"
-                f = search_file filepath
                 found = found.concat (search_file filepath)
                 if f.length > 0
                   print f[0]
@@ -403,7 +397,7 @@ module.exports = CppRefactor =
         (?:
         (class|struct)\s+                       #class or struct
         (\w+\s*(?:\([\w\(\),\-\+\*\/]*\))*\s+)*  #any definition like some macro befor class name
-        (#{ident_to_find})(?:\s*:|\s*\n*)
+        (#{ident_to_find})\s*(?::|\n|$)
         )
       ///
 
