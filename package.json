@@ -1,7 +1,7 @@
 {
   "name": "cpp-refactor",
   "main": "./lib/cpp-refactor",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "C++ refactoring tool",
   "keywords": [
     "c++",
@@ -10,7 +10,9 @@
   ],
   "activationCommands": {
     "atom-workspace": [
-      "cpp-refactor:find-class"
+      "cpp-refactor:find-class",
+      "cpp-refactor:copy-filepath-to-clipboard",
+      "cpp-refactor:copy-filename-to-clipboard"
     ]
   },
   "repository": "https://github.com/AnickaBurova/cpp-refactor",

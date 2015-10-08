@@ -49,6 +49,9 @@ module.exports = CppRefactor =
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'cpp-refactor:find-class': => @find_class()
 
+    @subscriptions.add atom.commands.add 'atom-workspace', 'cpp-refactor:copy-filepath-to-clipboard': => @copy_filepath_cb(true)
+    @subscriptions.add atom.commands.add 'atom-workspace', 'cpp-refactor:copy-filename-to-clipboard': => @copy_filepath_cb(false)
+
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()
@@ -424,3 +427,11 @@ module.exports = CppRefactor =
           print f,i,j
         if found.length > 0
           atom.workspace.open(found[0][0],{initialLine:found[0][1]})
+
+  copy_filepath_cb: (fullpath) ->
+    if editor = atom.workspace.getActiveTextEditor()
+      filepath = editor.getPath()
+      if not fullpath
+        filepath = path.basename(filepath)
+      editor.insertText(filepath,{select:true})
+      editor.cutSelectedText()
