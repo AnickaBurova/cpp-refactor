@@ -8,8 +8,4 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
-  'cmd-alt-r c'     : 'cpp-refactor:find-next-class'
-  'cmd-alt-r r'     : 'cpp-refactor:find-prev-class'
-  'cmd-alt-r b'     : 'cpp-refactor:select-brace-range'
-  'cmd-alt-r s'     : 'cpp-refactor:create-method-fields-size'
-  'cmd-alt-r f'     : 'cpp-refactor:find-class'
+  'cmd-alt-r c'     : 'cpp-refactor:find-class'
