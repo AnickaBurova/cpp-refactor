@@ -1,7 +1,7 @@
 {
   "name": "cpp-refactor",
   "main": "./lib/cpp-refactor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "C++ refactoring tool",
   "keywords": [
     "c++",
